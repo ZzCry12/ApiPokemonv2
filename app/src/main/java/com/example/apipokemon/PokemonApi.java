@@ -25,32 +25,31 @@ public class PokemonApi {
             for (int i = 0; i < result.length(); i++) {
                 try {
 
-                JSONObject pokemonJson = results.getJSONObject(i);
+                    JSONObject pokemonJson = results.getJSONObject(i);
 
-                Pokemon pokemon1 = new Pokemon();
-                pokemon1.setName(pokemonJson.getString("name"));
-                pokemon1.setDetailsUrl(pokemonJson.getString("url"));
+                    Pokemon pokemon1 = new Pokemon();
+                    pokemon1.setName(pokemonJson.getString("name"));
+                    pokemon1.setDetailsUrl(pokemonJson.getString("url"));
 
-                 String resultDetails = HttpUtils.get(pokemon1.getDetailsUrl());
+                    String resultDetails = HttpUtils.get(pokemon1.getDetailsUrl());
 
-                 JSONObject jsonDetails = new JSONObject(resultDetails);
-                 JSONObject sprites = jsonDetails.getJSONObject("sprites");
-                 String spriteDefault =sprites.getString("front_default");
+                    JSONObject jsonDetails = new JSONObject(resultDetails);
+                    JSONObject sprites = jsonDetails.getJSONObject("sprites");
+                    String spriteDefault = sprites.getString("front_default");
 
-                pokemon1.setHeight(jsonDetails.getInt("height"));
-                pokemon1.setImage(spriteDefault);
-                pokemon1.setWeight(jsonDetails.getInt("weight"));
+                    pokemon1.setHeight(jsonDetails.getInt("height"));
+                    pokemon1.setImage(spriteDefault);
+                    pokemon1.setWeight(jsonDetails.getInt("weight"));
 
 
-
-                listaPokemon.add(pokemon1);
+                    listaPokemon.add(pokemon1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
             System.out.println(listaPokemon);
-           return listaPokemon;
+            return listaPokemon;
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();

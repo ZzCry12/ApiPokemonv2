@@ -1,5 +1,6 @@
 package com.example.apipokemon;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.core.view.MenuHost;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.preference.PreferenceManager;
 
 import com.example.apipokemon.databinding.FragmentFirstBinding;
 
@@ -49,6 +51,7 @@ public class FirstFragment extends Fragment {
                 getContext(),
                 R.layout.lv_pokemon_row,
                 R.id.txtListName,
+
                 items
         );
 
@@ -63,9 +66,8 @@ public class FirstFragment extends Fragment {
     }
 
 
-
-    public  boolean onOptionItemSelected(@NonNull MenuItem item){
-        if(item.getItemId()== R.id.refresh){
+    public boolean onOptionItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.refresh) {
             refresh();
         }
         return super.onOptionsItemSelected(item);
@@ -73,20 +75,22 @@ public class FirstFragment extends Fragment {
 
     private void refresh() {
 
-        Toast.makeText(getContext(),"Refreshing..", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Refreshing..", Toast.LENGTH_LONG).show();
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        String tipo = preferences.getString("tipo", "");
+
+        if(tipo.equals("")){
+            tipo.getClass();
+        }
 
         executor.execute(() -> {
             PokemonApi api = new PokemonApi();
             ArrayList<Pokemon> pokemons = api.getPokemons();
 
             System.out.println(pokemons);
-
-
-
-
             handler.post(() -> {
                 adapter.clear();
                 adapter.addAll(pokemons);
